@@ -20,18 +20,9 @@ public class BookService {
         return bookRepo.findAll();
     }
 	
-    public Book updateBook(Long x, String t, String desc, String lang, int num) {
-        Optional<Book> b = bookRepo.findById(x);
-        if(b.isPresent()) {
-        	Book c = b.get();
-            c.setTitle(t);
-            c.setDescription(desc);
-            c.setLanguage(lang);
-            c.setNumberOfPages(num);
-            return bookRepo.save(c);
-        } else {
-            return null;
-        }
+    public Book updateBook(Book b) {
+        return bookRepo.save(b);
+
 	}
 
 	public void deleteBook(Long x) {
