@@ -1,45 +1,46 @@
-package com.andrewknell.relationships.services;
+package com.andrewknell.relate.services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.andrewknell.relationships.models.License;
-import com.andrewknell.relationships.models.Person;
-import com.andrewknell.relationships.repositories.LicenseRepo;
-import com.andrewknell.relationships.repositories.Repo;
+import com.andrewknell.relate.models.License;
+import com.andrewknell.relate.models.Person;
+import com.andrewknell.relate.repositories.LicenseRepo;
+import com.andrewknell.relate.repositories.PersonRepo;
 
 @Service
 public class PLService {
-	private final Repo repo;
+	private final PersonRepo perRepo;
 	private final LicenseRepo licRepo;
+	private static String newNumber = "000000";
 	
-	public PLService(Repo repo, LicenseRepo licRepo) {
-		this.repo = repo;
+	public PLService(PersonRepo perRepo, LicenseRepo licRepo) {
+		this.perRepo = perRepo;
 		this.licRepo = licRepo;
 	}
 
 	public List<Person> getAll() {
-        return repo.findAll();
+        return perRepo.findAll();
     }
 	
     public Person update(Person s) {
-        return repo.save(s);
+        return perRepo.save(s);
 	}
 
 	public void delete(Long x) {
-		repo.deleteById(x);
+		perRepo.deleteById(x);
 		return;
 	}
 	
     public Person create(Person s) {
     	
-        return repo.save(s);
+        return perRepo.save(s);
     }
 
     public Person findOne(Long id) {
-        Optional<Person> opt = repo.findById(id);
+        Optional<Person> opt = perRepo.findById(id);
         if(opt.isPresent()) {
             return opt.get();
         } else {
@@ -62,6 +63,8 @@ public class PLService {
 	}
 	
     public License create(License s) {
+    	s.setNumber(newNumber);
+    	newNumber= String.format("%06d", Integer.parseInt(newNumber)+1);
         return licRepo.save(s);
     }
 
