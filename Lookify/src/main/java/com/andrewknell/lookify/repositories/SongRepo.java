@@ -8,5 +8,6 @@ import com.andrewknell.lookify.models.Song;
 
 @Repository
 public interface SongRepo extends CrudRepository<Song, Long> {
+	List<Song> findAll();
 	
 }
