@@ -19,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name="songs")
 public class Song implements Comparable<Song>{
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -107,7 +108,6 @@ public class Song implements Comparable<Song>{
 
 	@Override
 	public int compareTo(Song o) {
-		
 		return this.getRating().compareTo(o.getRating());
 	}
 
