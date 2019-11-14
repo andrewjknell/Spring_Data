@@ -9,6 +9,6 @@
     <title>Registration Page</title>
 </head>
 <body>
-
+<h1>you logeed in</h1>
 </body>
 </html>
