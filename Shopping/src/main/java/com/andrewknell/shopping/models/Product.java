@@ -32,12 +32,12 @@ public class Product {
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "categories_products", 
-        joinColumns = @JoinColumn(name = "product_id"), 
-        inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+	    @ManyToMany(fetch = FetchType.LAZY)
+	    @JoinTable(
+	        name = "categories_products", 
+	        joinColumns = @JoinColumn(name = "product_id"), 
+	        inverseJoinColumns = @JoinColumn(name = "category_id")
+	    )
     private List<Category> categories;
     
     public Product() {

@@ -1,6 +1,7 @@
 package com.andrewknell.authentication.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -23,11 +26,10 @@ public class Obj {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@Size(min=2, max=255, message="Name must be between 2 and 255 characters")
-	private String firstName;
-	@Size(min=2, max=255)
-	private String lastName;
-	 
+	
+	@Size(min=5, max=255, message="idea must have at least 5 characters")
+	private String idea;
+
 	@Column(updatable=false)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createdAt;
@@ -37,11 +39,34 @@ public class Obj {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+   		 name="users_objs",
+   		 joinColumns = @JoinColumn(name="obj_id"),
+   		 inverseJoinColumns = @JoinColumn(name="user_id")
+   		 )
+    private List<User> likers;
     
 	public Obj() {
 		 
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<User> getLikers() {
+		return likers;
+	}
+
+	public void setLikers(List<User> likers) {
+		this.likers = likers;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -49,22 +74,15 @@ public class Obj {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getFirstName() {
-		return firstName;
+	
+	public String getIdea() {
+		return idea;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setIdea(String idea) {
+		this.idea = idea;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public Date getCreatedAt() {
 		return createdAt;
@@ -82,23 +100,16 @@ public class Obj {
 		this.updatedAt = updatedAt;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	@PrePersist
-	protected void onCreate(){
-	    this.createdAt = new Date();
-	}
-	
-	@PreUpdate
-	protected void onUpdate(){
-	    this.updatedAt = new Date();
-	}
+	 protected void onCreate(){
+	     this.createdAt = new Date();
+	 }
+	 @PreUpdate
+	 protected void onUpdate(){
+	     this.updatedAt = new Date();
+	 }
+
+
  
  }
  

@@ -1,0 +1,9 @@
+table{
+	border: 1px black solid;
+}
+tr, th, td{
+	border:1px black solid;
+}
+h1{
+	color:blue;
+}
