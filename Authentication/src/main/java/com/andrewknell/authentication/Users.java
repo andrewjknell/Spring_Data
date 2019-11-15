@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.andrewknell.authentication.models.User;
 import com.andrewknell.authentication.repositories.UserRepository;
@@ -28,15 +29,16 @@ public class Users {
 	}
 	
 	@GetMapping("/")
-	public String home(@ModelAttribute("user") User user,@ModelAttribute("user2") User user2) {
-		
+	public String home(@ModelAttribute("user") User user,@ModelAttribute("user2") User user2, @RequestParam(value="success", required=false)String s, Model model) {
+		model.addAttribute("success", s);
 		return "loginregistration.jsp";
 	}
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session) {
+	public String register(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session, RedirectAttributes rA) {
 		if(result.hasErrors()) {
 			return "loginregistration.jsp";
 		} else {
+			rA.addAttribute("success", "congrats you're registered! please log in");
 			User u = userService.registerUser(user);
 			session.setAttribute("userId", u.getId());
 			return "redirect:/";
@@ -58,9 +60,12 @@ public class Users {
 	
 	@GetMapping("/home")
 	public String home(Model model, HttpSession session) {
-		User u = userService.findUserById((Long) session.getAttribute("userId"));
-		model.addAttribute("user", u);
-		return "home.jsp";
+		if(session.getAttribute("userId") == null) {
+			return "redirect:/";
+		} else {
+			User u = userService.findUserById((Long) session.getAttribute("userId"));
+			return "home.jsp";
+		}
 	}
 
 	@GetMapping("/logout")

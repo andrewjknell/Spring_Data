@@ -37,6 +37,7 @@
         </p>
         <input type="submit" value="Register!"/>
     </form:form>
+    <h3>${success}</h3>
     </div>
     <div class="container">
     <h1>Login</h1>
